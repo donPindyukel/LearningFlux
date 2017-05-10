@@ -1,3 +1,13 @@
-<h1>
-  {{title}}
-</h1>
+<h3>@ngrx/store Party Planner</h3>
+<app-person-input
+  (addPerson)="addPerson($event)"
+>
+</app-person-input>
+<app-person-list
+  [people]="people"
+  (addGuest)="addGuest($event)"
+  (removeGuest)="removeGuest($event)"
+  (removePerson)="removePerson($event)"
+  (toggleAttending)="toggleAttending($event)"
+>
+</app-person-list>
