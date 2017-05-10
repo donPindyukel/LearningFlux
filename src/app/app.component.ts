@@ -26,11 +26,7 @@ export class AppComponent {
      demonstrating use without the async pipe,
      we will explore the async pipe in the next lesson
      */
-    this.subscription = this._store
-      .select('people')
-      .subscribe(people => {
-        this.people = people;
-      });
+    this.people = _store.select('people');
   }
   //all state-changing actions get dispatched to and handled by reducers
   addPerson(name){
