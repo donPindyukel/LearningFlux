@@ -1,6 +1,8 @@
 # PartyPlanner
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+With the advent of Angular 2 new patterns, best practices, and libraries empowered by new framework features and functionality are emerging. One such library, championed by Angular developer advocate Rob Wormald (huge props to @MikeRyan52 as well), is @ngrx/store. Store builds on the concepts made popular by Redux, a popular state management container in the React community, and supercharges it with the backing of RxJS. The result is a tool and philosophy that will revolutionize your applications and development experience.
+
+This is example application for learning flux composition.
 
 ## Development server
 
