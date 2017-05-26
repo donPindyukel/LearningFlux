@@ -18,6 +18,8 @@ export class PersonListComponent {
    emit relevant events back up for parent, or "container" components to handle
    */
   @Input() people;
+  //for now, we will pass filter down and apply
+  @Input() filter;
   @Output() addGuest = new EventEmitter();
   @Output() removeGuest = new EventEmitter();
   @Output() removePerson = new EventEmitter();
