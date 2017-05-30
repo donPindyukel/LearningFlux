@@ -2,6 +2,8 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
+import { RESET_STATE } from './core/reset';
+
 import {
   ADD_PERSON,
   REMOVE_PERSON,
@@ -62,6 +64,10 @@ export class AppComponent {
 
   updateFilter(filter) {
     this._store.dispatch({type: filter});
+  }
+
+  resetParty(){
+    this._store.dispatch({type: RESET_STATE});
   }
 
 }

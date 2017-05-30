@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { StoreModule } from '@ngrx/store';
-import "./rx-js.operators";
+import './rx-js.operators';
+
+import { RESET } from './core/reset';
 
 import { AppComponent } from './app.component';
 import { PersonInputComponent } from './person-input/person-input.component';
@@ -26,7 +28,7 @@ import { PartyStatsComponent } from './party-stats/party-stats.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    StoreModule.provideStore({people, partyFilter})
+    StoreModule.provideStore({people: RESET(people), partyFilter}),
   ],
   providers: [],
   bootstrap: [AppComponent]
