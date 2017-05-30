@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 
 import {
   ADD_PERSON,
@@ -18,32 +18,32 @@ import { id } from './core/id.model';
 })
 export class AppComponent {
 
+  public model;
   public people;
   public filter;
   public attending;
   public guests;
   private subscription;
 
-  constructor(private _store: Store<any>){
-
+  constructor(private _store: Store<any>) {
     /*
-     Observable of people, utilzing the async pipe
-     in our templates this will be subscribed to, with
-     new values being dispayed in our template.
-     Unsubscribe wil be called automatically when component
-     is disposed.
+     Every time people or partyFilter emits, pass the latest
+     value from each into supplied function. We can then calculate
+     and output statistics.
      */
-    this.people = _store.select('people');
-    /*
-     this is a naive way to handle state projection, we will discover a better
-     Rx based solution in next lesson
-     */
-    this.filter = _store.select('partyFilter');
-
-    this.attending = this.people.map(p => p.filter(person => person.attending));
-    this.guests = this.people.map(p => p.map(person => person.guests).reduce((acc, curr) => acc + curr, 0));
+    this.model = Observable.combineLatest(
+      _store.select('people'),
+      _store.select('partyFilter'),
+      (people, filter) => {
+        return {
+          total: people['length'],
+          people: people['filter'](filter),
+          attending: people['filter'](person => person.attending).length,
+          guests: people['reduce']((acc, curr) => acc + curr.guests, 0)
+        };
+      });
   }
-  //all state-changing actions get dispatched to and handled by reducers
+
   addPerson(name){
     this._store.dispatch({type: ADD_PERSON, payload: {id: id(), name}});
   }
@@ -65,13 +65,8 @@ export class AppComponent {
   }
 
   updateFilter(filter){
-    this._store.dispatch({type: filter})
+    this._store.dispatch({type: filter});
   }
 
-  //ngOnDestroy to unsubscribe is no longer necessary
-
- /* ngOnDestroy(){
-    this.subscription.unsubscribe();
-  }*/
 }
 

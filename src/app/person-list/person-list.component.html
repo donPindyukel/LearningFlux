@@ -1,6 +1,6 @@
 <ul>
   <li
-    *ngFor="let person of people.filter(filter)"
+    *ngFor="let person of people"
     [class.attending]="person.attending"
   >
     {{person.name}} - Guests: {{person.guests}}
