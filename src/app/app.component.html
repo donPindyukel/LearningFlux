@@ -1,5 +1,9 @@
 <h3>@ngrx/store Party Planner</h3>
 
+<div class="margin-bottom-10">
+  Percent Attendance: {{percentAttendance | async}}%
+</div>
+
 <app-party-stats
   [invited]="(model | async)?.total"
   [attending]="(model | async)?.attending"

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -10,19 +10,18 @@ import {
   TOGGLE_ATTENDING
 } from './core/actions';
 import { id } from './core/id.model';
+import {partyModel, percentAttending} from './core/selectors';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
 
   public model;
-  public people;
-  public filter;
-  public attending;
-  public guests;
+  public percentAttendance;
   private subscription;
 
   constructor(private _store: Store<any>) {
@@ -33,18 +32,15 @@ export class AppComponent {
      */
     this.model = Observable.combineLatest(
       _store.select('people'),
-      _store.select('partyFilter'),
-      (people, filter) => {
-        return {
-          total: people['length'],
-          people: people['filter'](filter),
-          attending: people['filter'](person => person.attending).length,
-          guests: people['reduce']((acc, curr) => acc + curr.guests, 0)
-        };
-      });
+      _store.select('partyFilter')
+    )
+    //extracting party model to selector
+    .let(partyModel());
+    //for demonstration on combining selectors
+    this.percentAttendance = _store.let(percentAttending());
   }
 
-  addPerson(name){
+  addPerson(name) {
     this._store.dispatch({type: ADD_PERSON, payload: {id: id(), name}});
   }
 
@@ -52,19 +48,19 @@ export class AppComponent {
     this._store.dispatch({type: ADD_GUEST, payload: id});
   }
 
-  removeGuest(id){
+  removeGuest(id) {
     this._store.dispatch({type: REMOVE_GUEST, payload: id});
   }
 
-  removePerson(id){
+  removePerson(id) {
     this._store.dispatch({type: REMOVE_PERSON, payload: id});
   }
 
-  toggleAttending(id){
+  toggleAttending(id) {
     this._store.dispatch({type: TOGGLE_ATTENDING, payload: id});
   }
 
-  updateFilter(filter){
+  updateFilter(filter) {
     this._store.dispatch({type: filter});
   }
 
